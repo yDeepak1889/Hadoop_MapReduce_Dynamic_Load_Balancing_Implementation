@@ -3,7 +3,7 @@ import socket
 
 def getIP():
 	s = s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.connect(('google.com', 0))
+	s.connect(('8.8.8.8', 0))
 	return s.getsockname()[0]
 
 
