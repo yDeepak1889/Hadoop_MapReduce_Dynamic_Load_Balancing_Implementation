@@ -12,12 +12,13 @@ def getIP():
 def getHostName():
 	return socket.gethostname()
 
+
 try :
 	HBobj = Pyro4.Proxy("PYRONAME:heartbeats")
 
 except:
 	print ('Something went wrong')
-	
+
 
 
 report = {
