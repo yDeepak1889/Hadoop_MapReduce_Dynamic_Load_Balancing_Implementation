@@ -1,5 +1,7 @@
 import Pyro4
 import socket
+import time
+
 
 def getIP():
 	s = s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -10,11 +12,19 @@ def getIP():
 def getHostName():
 	return socket.gethostname()
 
-HBobj = Pyro4.Proxy("PYRONAME:heartbeats")
+try :
+	HBobj = Pyro4.Proxy("PYRONAME:heartbeats")
+
+except:
+	print ('Something went wrong')
+	
+
 
 report = {
 	'host-name' : getHostName(),
 	'ip' : getIP()
 }
 
-print(HBobj.updateStatus(report))
+while (1) :
+	time.sleep(5)
+	print(HBobj.updateStatus(report))
