@@ -16,8 +16,12 @@ def getResourceStatusOfDataNodes() :
 
 	for dataNode in datanodeInfo.keys():
 		HBobj = Pyro4.Proxy("PYRONAME:monitorModule" +datanodeInfo[dataNode]['ip'])
-		result[datanodeInfo[dataNode]['ip']]['cpu'] = HBobj.getCPUinfo()
-		result[datanodeInfo[dataNode]['ip']]['ram'] = HBobj.getRAMinfo()
-		result[datanodeInfo[dataNode]['ip']]['disk'] = HBobj.getDISKinfo()
+		resource = {}
+		resource['cpu'] = HBobj.getCPUinfo()
+		resource['ram'] = HBobj.getRAMinfo()
+		resource['disk'] = HBobj.getDISKinfo()
+		result[datanodeInfo[dataNode]['ip']] = resource
 
 	return result
+
+print(getResourceStatusOfDataNodes())

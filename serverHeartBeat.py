@@ -4,8 +4,10 @@ from time import time
 @Pyro4.expose
 class ListenHeartBeats(object):
 
-	def __init__ (self):
-		self.liveNodes = {}
+	liveNodes = {}
+
+	# def __init__ (self):
+	# 	self.liveNodes = {}
 
 	def updateStatus(self, data):
 		required = ['host-name', 'ip']
@@ -14,14 +16,14 @@ class ListenHeartBeats(object):
 
 		self.liveNodes[data['host-name']] = {'ip' : data['ip'], 'lastCall' : time()}
 
-		return True
+		return self.liveNodes
 
 	def returnLiveNodes (self):
-		for node in liveNodes.keys():
-			if time() - liveNodes[node]['lastCall'] > 300 :
-				liveNodes.pop(node, None)
+		for node in self.liveNodes.keys():
+			if time() - self.liveNodes[node]['lastCall'] > 300.0 :
+				self.liveNodes.pop(node, None)
 
-		return liveNodes
+		return self.liveNodes
 
 
 daemon = Pyro4.Daemon()
