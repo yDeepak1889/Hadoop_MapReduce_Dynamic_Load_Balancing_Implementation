@@ -21,4 +21,3 @@ def getResourceStatusOfDataNodes() :
 		result[datanodeInfo[dataNode]['ip']]['disk'] = HBobj.getDISKinfo()
 
 	return result
-
