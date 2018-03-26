@@ -27,7 +27,9 @@ class ListenHeartBeats(object):
 
 
 daemon = Pyro4.Daemon()
-ns = Pyro4.locateNS()
+host = '172.20.33.93' #IP address of name server
+port = 5005
+ns = Pyro4.locateNS(host=host, port=port)
 uri = daemon.register(ListenHeartBeats)
 ns.register("heartbeats", uri)
 
