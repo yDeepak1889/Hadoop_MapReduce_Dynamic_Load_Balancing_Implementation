@@ -4,7 +4,7 @@ import time
 
 
 def getIP():
-	s = s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	s.connect(('8.8.8.8', 0))
 	return s.getsockname()[0]
 
@@ -14,7 +14,8 @@ def getHostName():
 
 
 try :
-	HBobj = Pyro4.Proxy("PYRONAME:heartbeats")
+	uri = Pyro4.resolve("PYRONAME:heartbeats")
+	HBobj = Pyro4.Proxy(uri)
 
 except:
 	print ('Something went wrong')
