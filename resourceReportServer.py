@@ -36,7 +36,8 @@ class monitorSystem(object):
 daemon = Pyro4.Daemon()
 host = '127.0.0.1' #IP address of name server
 port = 5005
-ns = Pyro4.locateNS(host=host, port=port)
+#host=host, port=port
+ns = Pyro4.locateNS()
 uri = daemon.register(monitorSystem)
 ns.register("monitorModule" + getIP(), uri)
 
