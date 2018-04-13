@@ -26,7 +26,7 @@ class ListenHeartBeats(object):
 		return self.liveNodes
 
 
-host = '172.20.33.93' #IP address of name server
+host = '172.20.33.120' #Own IP address
 port = 5001
 daemon = Pyro4.Daemon(host=host, port=port)
 #host=host, port=port
@@ -38,4 +38,3 @@ ns.register("heartbeats", uri)
 
 print ("Listening . . .")
 daemon.requestLoop()
-
