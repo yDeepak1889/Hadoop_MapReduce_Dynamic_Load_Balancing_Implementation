@@ -9,6 +9,7 @@ class webScraping(object):
     def __init__(self):
         self.data = ""
 
+    ''' resources{} is a map of IP's of node with the block it contains'''
     def readData(self, url):
         ret ={}
         req = urllib.request.Request(url)
@@ -34,9 +35,9 @@ class webScraping(object):
                 if ip != '127.0.1.1' and ip!= '127.0.0.1':
                     resources[ip].append(i)
 
-        return resources
+        return resources, ret
 
 
 w = webScraping()
-k  = w.readData("http://172.20.33.93:50070/fsck?ugi=hadoop&files=1&blocks=1&locations=1&path=%2Fuser%2Fhadoop%2Fbooks%2Falice.txt")
+k, p  = w.readData("http://172.20.33.93:50070/fsck?ugi=hadoop&files=1&blocks=1&locations=1&path=%2Fuser%2Fhadoop%2Fbooks%2Falice.txt")
 print(k)
