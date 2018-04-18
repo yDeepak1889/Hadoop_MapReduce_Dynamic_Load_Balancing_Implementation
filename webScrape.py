@@ -25,16 +25,6 @@ class webScraping(object):
             for ip_c,ip_s in enumerate(matches_ip):
                 y = ip_s.groups()
                 ip_list.append(y[0])
-<<<<<<< HEAD
-            ret[x[0]]=[x[1],x[2],ip_list[1:]]
-        return ret
-
-
-
-url = "http://172.20.33.93:50070/fsck?ugi=hadoop&files=1&blocks=1&locations=1&path=%2Fuser%2Fhadoop%2FS.txt"
-ojb = webScraping()
-print (ojb.readData(url))
-=======
             ret[x[0]]=[x[1],x[2],ip_list]
 
         resources = {}
@@ -51,4 +41,3 @@ print (ojb.readData(url))
 w = webScraping()
 k, p  = w.readData("http://172.20.33.93:50070/fsck?ugi=hadoop&files=1&blocks=1&locations=1&path=%2Fuser%2Fhadoop%2Fbooks%2Falice.txt")
 print(k)
->>>>>>> 7ac41e438c7991714036053d4cf7b2e674a860ae
