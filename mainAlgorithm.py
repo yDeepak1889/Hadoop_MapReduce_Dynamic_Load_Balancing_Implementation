@@ -1,9 +1,11 @@
 from resourceReportClient import *
+import operator
 
 class mainAlgorithm(object):
 
-	def __init__(self, resources):
+	def __init__(self, resources, block_info):
 
+		self.block_info = block_info
 		self.resources = resources
 		self.List_cpu = {}
 		self.List_ram = {}
@@ -75,20 +77,20 @@ class mainAlgorithm(object):
 		S_cluster = 0
 
 		for i in self.S_node.keys():
+			if i in self.block_info.keys():
+				Pi = alpha*(self.List_cpu[i]/self.minCPU) + beta*(self.List_ram[i]/self.minRam)
+				self.P_node[i] = Pi
 
-			Pi = alpha*(self.List_cpu[i]/self.minCPU) + beta*(self.List_ram[i]/self.minRam)
-			self.P_node[i] = Pi
+				t = Pi/self.U_node[i]
 
-			t = Pi/self.U_node[i]
+				if max_pBYu < t:
+					max_pBYu = t
 
-			if max_pBYu < t:
-				max_pBYu = t
+				Ri = (self.U_node[i]/self.S_node[i])*100
+				self.R_node[i] = Ri
 
-			Ri = (self.U_node[i]/self.S_node[i])*100
-			self.R_node[i] = Ri
-
-			U_cluster += self.U_node[i]
-			S_cluster += self.S_node[i]
+				U_cluster += self.U_node[i]
+				S_cluster += self.S_node[i]
 
 
 		self.R_cluster = (U_cluster/S_cluster)*100       #Load Ratio of the cluster
@@ -96,6 +98,28 @@ class mainAlgorithm(object):
 
 		#Calculating self.R_hit for each node
 		for key in self.P_node.keys():
+			if key in self.block_info.keys():
+				Rhi = (self.P_node[key]/self.U_node[key])/(max_pBYu)
+				self.R_hit[key] = Rhi
 
-			Rhi = (self.P_node[key]/self.U_node[key])/(max_pBYu)
-			self.R_hit[key] = Rhi
+
+	def alloc():
+
+		Nodes1 = {}
+		Nodes2 = {}
+		Nodes3 = {}
+
+		for i in self.R_hit.keys():
+
+			if(self.R_hit[i] <= self.R_cluster):
+				Nodes1[i] = self.R_hit[i]
+
+			elif(self.R_hit[i] > self.R_cluster and self.R_hit[i] < self.R_max):
+				Nodes2[i] = self.R_hit[i]
+
+			else:
+				Nodes3[i] = self.R_hit[i]
+
+		allocated = []
+		dc_sort = sorted(dc.items(),key = operator.itemgetter(1),reverse = True)
+		print(Nodes1, Nodes2, Nodes3)

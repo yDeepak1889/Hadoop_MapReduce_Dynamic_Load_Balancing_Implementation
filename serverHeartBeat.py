@@ -26,7 +26,7 @@ class ListenHeartBeats(object):
 		return self.liveNodes
 
 
-host = '172.20.33.120' #Own IP address
+host = '172.20.33.123' 
 port = 5001
 daemon = Pyro4.Daemon(host=host, port=port)
 #host=host, port=port
