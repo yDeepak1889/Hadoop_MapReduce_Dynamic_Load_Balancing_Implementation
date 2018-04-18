@@ -24,6 +24,11 @@ class webScraping(object):
             for ip_c,ip_s in enumerate(matches_ip):
                 y = ip_s.groups()
                 ip_list.append(y[0])
-            ret[x[0]]=[x[1],x[2],ip_list]
+            ret[x[0]]=[x[1],x[2],ip_list[1:]]
         return ret
 
+
+
+url = "http://172.20.33.93:50070/fsck?ugi=hadoop&files=1&blocks=1&locations=1&path=%2Fuser%2Fhadoop%2FS.txt"
+ojb = webScraping()
+print (ojb.readData(url))
