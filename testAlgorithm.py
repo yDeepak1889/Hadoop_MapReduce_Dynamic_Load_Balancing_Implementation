@@ -13,6 +13,4 @@ implement.parametersCalc()
 implement.otherParams(1, 0.8)
 print(implement.R_hit)
 
-
-
 implement.alloc()

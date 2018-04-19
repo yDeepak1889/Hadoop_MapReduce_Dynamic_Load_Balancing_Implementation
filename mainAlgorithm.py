@@ -103,7 +103,7 @@ class mainAlgorithm(object):
 				self.R_hit[key] = Rhi
 
 
-	def alloc():
+	def alloc(self):
 
 		Nodes1 = {}
 		Nodes2 = {}
@@ -121,5 +121,42 @@ class mainAlgorithm(object):
 				Nodes3[i] = self.R_hit[i]
 
 		allocated = []
-		dc_sort = sorted(dc.items(),key = operator.itemgetter(1),reverse = True)
-		print(Nodes1, Nodes2, Nodes3)
+
+		result = []
+		if Nodes1:
+			# = sorted(Nodes1.items(),key = operator.itemgetter(1),reverse = True)
+			for key in Nodes1.keys():
+				if block_info[key]:
+					for block in block_info[key]:
+						if block not in allocated:
+							result[0] = block
+							result[1] = key
+							allocated.append(block)
+							count += 1
+							break
+
+				#Main logic
+
+		elif Nodes2:
+			Nodes2 = sorted(Nodes2.items(),key = operator.itemgetter(1),reverse = True)
+			for key in Nodes2.keys():
+				if block_info[key]:
+					for block in block_info[key]:
+						if block not in allocated:
+							result[0] = block
+							result[1] = key
+							allocated.append(block)
+							count+=1
+							break
+
+
+				#Main logic
+		else:
+			if count < no_of_blocks:
+				print("ABORT!!!")
+
+		'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
+
+		if count < no_of_blocks:
+			parametersCalc()
+			otherParams(1, 0.8)
