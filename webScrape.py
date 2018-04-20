@@ -27,12 +27,15 @@ class webScraping(object):
                 ip_list.append(y[0])
             ret[x[0]]=[x[1],x[2],ip_list]
 
+        print(ret)
         resources = {}
+        count = 0
         for i in ret.keys():
+            count+=1
             for ip in ret[i][2]:
                 if ip not in resources and ip != '127.0.1.1' and ip!= '127.0.0.1':
                     resources[ip] = []
                 if ip != '127.0.1.1' and ip!= '127.0.0.1':
                     resources[ip].append(i)
 
-        return resources
+        return resources, count
