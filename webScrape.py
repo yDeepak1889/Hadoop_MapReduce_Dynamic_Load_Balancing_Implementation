@@ -36,6 +36,12 @@ class webScraping(object):
                 if ip not in resources and ip != '127.0.1.1' and ip!= '127.0.0.1':
                     resources[ip] = []
                 if ip != '127.0.1.1' and ip!= '127.0.0.1':
-                    resources[ip].append(i)
+                    l = []
+                    l.append(i)
+                    l.append(ret[i][0])
+                    resources[ip].append(l)
+
+
+        print(resources)
 
         return resources, count

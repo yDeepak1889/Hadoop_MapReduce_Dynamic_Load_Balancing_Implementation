@@ -134,10 +134,11 @@ class mainAlgorithm(object):
 				for key in Nodes1.keys():
 					if self.block_info[key]:
 						for block in self.block_info[key]:
-							if block not in allocated:
-								result.append(block)
+							if block[0] not in allocated:
+								result.append(block[0])
 								result.append(key)
-								allocated.append(block)
+								result.append(block[1])
+								allocated.append(block[0])
 								count += 1
 								flag = 1
 								break
@@ -149,13 +150,18 @@ class mainAlgorithm(object):
 				for key in Nodes2.keys():
 					if self.block_info[key]:
 						for block in self.block_info[key]:
-							if block not in allocated:
-								result[0] = block
-								result[1] = key
-								allocated.append(block)
+							if block[0] not in allocated:
+								result.append(block[0])
+								result.append(key)
+								result.append(block[1])
+								allocated.append(block[0])
+								flag1 =1
 								count+=1
 								break
+						if flag1 == 1:
+							break
 			
+	
 			final.append(result)
 
 			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
@@ -165,4 +171,4 @@ class mainAlgorithm(object):
 
 
 		return final
-		
+
