@@ -26,6 +26,7 @@ def reducerClient(ip, outputName, reducerName, count):
 	except:
 		print ('Something went wrong:(')
 	
+	print ("Running Reducer Task...")
 	cmd = "javac " + reducerName +".java "+"-cp $(../hadoop/sbin/hadoop classpath)"
 	os.system(cmd)
 	
@@ -40,7 +41,7 @@ def reducerClient(ip, outputName, reducerName, count):
 	
 	HBobj.initJob(reducerName)
 	status = HBobj.runReduceTask(outputName, outputName+".txt", reducerName, count)
-	
+	print ("Reducer Task Completed")
 	return status
 
 

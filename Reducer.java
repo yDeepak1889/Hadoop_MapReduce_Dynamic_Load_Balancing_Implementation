@@ -25,7 +25,7 @@ public class Reducer extends Configured implements Tool {
 
         Configuration conf = getConf();
 
-        System.out.println("configured filesystem = " + conf.get(FS_PARAM_NAME));
+        //System.out.println("configured filesystem = " + conf.get(FS_PARAM_NAME));
 
         FileSystem fs = FileSystem.get(conf);
 

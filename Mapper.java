@@ -24,7 +24,7 @@ public class Mapper extends Configured implements Tool {
 
         Configuration conf = getConf();
 
-        System.out.println("configured filesystem = " + conf.get(FS_PARAM_NAME));
+        //System.out.println("configured filesystem = " + conf.get(FS_PARAM_NAME));
 
         FileSystem fs = FileSystem.get(conf);
 
@@ -67,7 +67,7 @@ public class Mapper extends Configured implements Tool {
 			}else {
 				map.put(splited[i], 1);
 			}
-		System.out.println(splited[i]);
+		//System.out.println(splited[i]);
 	}
 	
 	Path path = new Path(fs.getHomeDirectory(), outputName);
