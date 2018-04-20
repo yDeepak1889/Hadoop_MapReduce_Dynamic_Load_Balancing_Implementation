@@ -114,6 +114,7 @@ class mainAlgorithm(object):
 			Nodes3 = {}
 			result = []
 
+			flag = 0
 			for i in self.R_hit.keys():
 
 				if(self.R_hit[i] <= self.R_cluster):
@@ -125,8 +126,10 @@ class mainAlgorithm(object):
 				else:
 					Nodes3[i] = self.R_hit[i]
 
+			print(Nodes1)
 			if Nodes1:
 				Nodes1 = collections.OrderedDict(sorted(Nodes1.items(), key=lambda t: t[1], reverse = True))
+				#print("____________________",Nodes1)
 				for key in Nodes1.keys():
 					if self.block_info[key]:
 						for block in self.block_info[key]:
@@ -135,9 +138,12 @@ class mainAlgorithm(object):
 								result.append(key)
 								allocated.append(block)
 								count += 1
+								flag = 1
 								break
+						if flag==1:
+							break
 
-			elif Nodes2:
+			elif Nodes2 and flag != 1:
 				Nodes2 = collections.OrderedDict(sorted(Nodes2.items(), key=lambda t: t[1], reverse = True))
 				for key in Nodes2.keys():
 					if self.block_info[key]:
@@ -152,5 +158,5 @@ class mainAlgorithm(object):
 
 			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
 			if count < no_of_blocks:
-				parametersCalc()
-				otherParams(1, 0.8)
+				self.parametersCalc()
+				self.otherParams(1, 0.8)

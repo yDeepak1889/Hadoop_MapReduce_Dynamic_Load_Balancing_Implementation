@@ -23,5 +23,3 @@ def getResourceStatusOfDataNodes() :
 		result[datanodeInfo[dataNode]['ip']] = resource
 
 	return result
-
-print(getResourceStatusOfDataNodes())
