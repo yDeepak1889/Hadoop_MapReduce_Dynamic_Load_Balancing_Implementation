@@ -1,5 +1,6 @@
 from resourceReportClient import *
 import operator
+import collections
 
 class mainAlgorithm(object):
 
@@ -7,22 +8,16 @@ class mainAlgorithm(object):
 
 		self.block_info = block_info
 		self.resources = resources
-		self.List_cpu = {}
-		self.List_ram = {}
-		self.S_node   = {}
-		self.U_node   = {}
-		self.P_node   = {}
-		self.R_node   = {}
-		self.R_hit    = {}
-		self.R_cluster= 0
-		self.R_max    = 0
-		self.minRam   = 10000000000000000
-		self.minCPU   = 10000000000000000
-
 
 	def parametersCalc(self):
 
 		'''Function calculates basic parameters which are to be used by otherParams()'''
+		self.List_cpu = {}
+		self.List_ram = {}
+		self.S_node   = {}
+		self.U_node   = {}
+		self.minRam   = 10000000000000000
+		self.minCPU   = 10000000000000000
 
 		for i in self.resources.keys() :
 
@@ -63,6 +58,11 @@ class mainAlgorithm(object):
 	def otherParams(self, typeOfTask, gama):
 
 		'''Function calculates all parameters required for main algorithm : R_hit, R_cluster, ....'''
+		self.P_node   = {}
+		self.R_node   = {}
+		self.R_hit    = {}
+		self.R_cluster= 0
+		self.R_max    = 0
 
 		if(typeOfTask == 1):
 			alpha = 0.8
@@ -103,60 +103,54 @@ class mainAlgorithm(object):
 				self.R_hit[key] = Rhi
 
 
-	def alloc(self):
+	def alloc(self, no_of_blocks):
 
-		Nodes1 = {}
-		Nodes2 = {}
-		Nodes3 = {}
-
-		for i in self.R_hit.keys():
-
-			if(self.R_hit[i] <= self.R_cluster):
-				Nodes1[i] = self.R_hit[i]
-
-			elif(self.R_hit[i] > self.R_cluster and self.R_hit[i] < self.R_max):
-				Nodes2[i] = self.R_hit[i]
-
-			else:
-				Nodes3[i] = self.R_hit[i]
-
+		count = 0
 		allocated = []
 
-		result = []
-		if Nodes1:
-			# = sorted(Nodes1.items(),key = operator.itemgetter(1),reverse = True)
-			for key in Nodes1.keys():
-				if block_info[key]:
-					for block in block_info[key]:
-						if block not in allocated:
-							result[0] = block
-							result[1] = key
-							allocated.append(block)
-							count += 1
-							break
+		while count < no_of_blocks:
+			Nodes1 = {}
+			Nodes2 = {}
+			Nodes3 = {}
+			result = []
 
-				#Main logic
+			for i in self.R_hit.keys():
 
-		elif Nodes2:
-			Nodes2 = sorted(Nodes2.items(),key = operator.itemgetter(1),reverse = True)
-			for key in Nodes2.keys():
-				if block_info[key]:
-					for block in block_info[key]:
-						if block not in allocated:
-							result[0] = block
-							result[1] = key
-							allocated.append(block)
-							count+=1
-							break
+				if(self.R_hit[i] <= self.R_cluster):
+					Nodes1[i] = self.R_hit[i]
 
+				elif(self.R_hit[i] > self.R_cluster and self.R_hit[i] < self.R_max):
+					Nodes2[i] = self.R_hit[i]
 
-				#Main logic
-		else:
+				else:
+					Nodes3[i] = self.R_hit[i]
+
+			if Nodes1:
+				Nodes1 = collections.OrderedDict(sorted(Nodes1.items(), key=lambda t: t[1], reverse = True))
+				for key in Nodes1.keys():
+					if self.block_info[key]:
+						for block in self.block_info[key]:
+							if block not in allocated:
+								result.append(block)
+								result.append(key)
+								allocated.append(block)
+								count += 1
+								break
+
+			elif Nodes2:
+				Nodes2 = collections.OrderedDict(sorted(Nodes2.items(), key=lambda t: t[1], reverse = True))
+				for key in Nodes2.keys():
+					if self.block_info[key]:
+						for block in self.block_info[key]:
+							if block not in allocated:
+								result[0] = block
+								result[1] = key
+								allocated.append(block)
+								count+=1
+								break
+			print(result)
+
+			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
 			if count < no_of_blocks:
-				print("ABORT!!!")
-
-		'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
-
-		if count < no_of_blocks:
-			parametersCalc()
-			otherParams(1, 0.8)
+				parametersCalc()
+				otherParams(1, 0.8)
