@@ -52,7 +52,7 @@ public class Mapper extends Configured implements Tool {
 	in.readFully(offset, out, 0, size);
  
     String outputStr = new String (out, "UTF-8");
-
+	
 	String[] splited = outputStr.split("\\s+");
 	
 	int splitSize = splited.length;

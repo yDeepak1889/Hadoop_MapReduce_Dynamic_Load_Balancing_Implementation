@@ -48,7 +48,7 @@ public class Reducer extends Configured implements Tool {
 		int splitSize;
 		
 		for (int k = 0; k < numberOfMappers; k++) {
-			tempName = inputName + 0 + ".txt";
+			tempName = inputName + k + ".txt";
 			mapperOutputFilePath = new Path(fs.getHomeDirectory(), tempName);
 			
 			if (!fs.exists(mapperOutputFilePath)) {
@@ -96,7 +96,13 @@ public class Reducer extends Configured implements Tool {
 		for (Map.Entry<String, Integer> entry : map.entrySet()) {
 				streamWriter.writeChars(entry.getKey() + " " + entry.getValue()+"\n");
 		}
-
+		
+		/*for (i = 0; i < numberOfMappers; i++) {
+			tempName = inputName + 0 + ".txt";
+			mapperOutputFilePath = new Path(fs.getHomeDirectory(), tempName);
+			fs.delete(mapperOutputFilePath);
+		}*/
+		
 		out = null;
 		fs.close();
 
