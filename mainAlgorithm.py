@@ -107,6 +107,7 @@ class mainAlgorithm(object):
 
 		count = 0
 		allocated = []
+		final = []
 
 		while count < no_of_blocks:
 			Nodes1 = {}
@@ -154,9 +155,13 @@ class mainAlgorithm(object):
 								allocated.append(block)
 								count+=1
 								break
-			print(result)
+			
+			final.append(result)
 
 			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
 			if count < no_of_blocks:
 				self.parametersCalc()
 				self.otherParams(1, 0.8)
+
+
+		return final

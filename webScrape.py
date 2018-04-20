@@ -35,4 +35,4 @@ class webScraping(object):
                 if ip != '127.0.1.1' and ip!= '127.0.0.1':
                     resources[ip].append(i)
 
-        return resources, ret
+        return resources
