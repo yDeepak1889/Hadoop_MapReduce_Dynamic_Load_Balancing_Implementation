@@ -104,6 +104,7 @@ class mainAlgorithm(object):
 
 
 	def alloc(self, no_of_blocks):
+		'''Function allocates the mapper and reducer tasks to the blocks according to R_hit values'''
 
 		count = 0
 		allocated = []
