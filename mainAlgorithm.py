@@ -1,6 +1,9 @@
 from resourceReportClient import *
 import operator
 import collections
+import threading
+from run import *
+
 
 class mainAlgorithm(object):
 
@@ -103,13 +106,14 @@ class mainAlgorithm(object):
 				self.R_hit[key] = Rhi
 
 
-	def alloc(self, no_of_blocks):
+	def alloc(self, no_of_blocks, inputName, output, mapperName, reducerName):
 		'''Function allocates the mapper and reducer tasks to the blocks according to R_hit values'''
 
 		count = 0
 		allocated = []
 		final = []
-
+		listOfThreads = []
+		offset = 0
 		while count < no_of_blocks:
 			Nodes1 = {}
 			Nodes2 = {}
@@ -161,15 +165,48 @@ class mainAlgorithm(object):
 								break
 						if flag1 == 1:
 							break
-			
-	
+
+
 			final.append(result)
 
+			t = threading.Thread(target=mapperClient, args=(result[1], inputName, str(offset), result[2], output+result[0]+".txt", mapperName,))
+			listOfThreads.append(t)
+			t.start()
+			offset += int(result[2])
 			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
 			if count < no_of_blocks:
 				self.parametersCalc()
 				self.otherParams(1, 0.8)
 
 
+
+		for th in listOfThreads:
+			th.join()
+
 		return final
 
+
+if __name__=="__main__":
+	params = sys.argv
+
+	inputName = params[3]
+	mapperName = params[1]
+	reducerName = params[2]
+	output = params[4]
+
+	initJob (mapperName)
+
+	fileName = "http://172.20.33.93:50070/fsck?ugi=hadoop&blocks=1&locations=1&files=1&path=%2Fuser%2Fhadoop%2F"+inputName
+
+	w = webScraping()
+	block_info, no_of_blocks = w.readData(fileName)
+
+	resources = {}
+	resources = getResourceStatusOfDataNodes()
+	implement = mainAlgorithm(resources, block_info)
+	implement.parametersCalc()
+	implement.otherParams(1, 0.8)
+	final = []
+	final = implement.alloc(no_of_blocks, inputName, output, mapperName, reducerName)
+	while (reducerClient(final[0][1], output, reducerName, str(no_of_blocks)) != 0) :
+	 		pass

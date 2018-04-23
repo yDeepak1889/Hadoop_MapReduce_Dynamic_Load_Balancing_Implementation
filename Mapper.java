@@ -43,23 +43,23 @@ public class Mapper extends Configured implements Tool {
         }
 
         FSDataInputStream in = fs.open(dataset);
-       
+
 
         byte [] out = new byte[size];
 
         int numBytes;
 
 	in.readFully(offset, out, 0, size);
- 
+
     String outputStr = new String (out, "UTF-8");
-	
+
 	String[] splited = outputStr.split("\\s+");
-	
+
 	int splitSize = splited.length;
 	int i;
-	
+
 	Map<String, Integer> map = new HashMap<String, Integer>();
-	  
+
 	for (i = 0; i < splitSize; i++) {
 		if (splited[i].length() > 2)
 			if (map.containsKey(splited[i])) {
@@ -69,10 +69,10 @@ public class Mapper extends Configured implements Tool {
 			}
 		//System.out.println(splited[i]);
 	}
-	
+
 	Path path = new Path(fs.getHomeDirectory(), outputName);
 	final FSDataOutputStream streamWriter = fs.create(path);
-	
+
 	for (Map.Entry<String, Integer> entry : map.entrySet()) {
     		streamWriter.writeChars(entry.getKey() + " " + entry.getValue()+"\n");
 	}
@@ -88,4 +88,3 @@ public class Mapper extends Configured implements Tool {
                 System.exit(returnCode);
         }
 }
-
