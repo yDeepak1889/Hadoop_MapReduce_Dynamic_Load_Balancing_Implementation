@@ -9,12 +9,14 @@ class mainAlgorithm(object):
 
 	def __init__(self, resources, block_info):
 
-		self.block_info = block_info
-		self.resources = resources
+		print("Main task allocation module is called. Work in progress...")
 
-	def parametersCalc(self):
+		self.block_info = block_info
+
+	def parametersCalc(self, resources):
 
 		'''Function calculates basic parameters which are to be used by otherParams()'''
+		self.resources = resources
 		self.List_cpu = {}
 		self.List_ram = {}
 		self.S_node   = {}
@@ -115,6 +117,8 @@ class mainAlgorithm(object):
 		listOfThreads = []
 		offset = 0
 		while count < no_of_blocks:
+
+			print("Allocation of mapper task initiated for iteration : ", count)
 			Nodes1 = {}
 			Nodes2 = {}
 			Nodes3 = {}
@@ -167,15 +171,19 @@ class mainAlgorithm(object):
 							break
 
 
+			#result[0] ==> block No. result[1] ==> IP  , result[2] ==> block Size
 			final.append(result)
-
 			t = threading.Thread(target=mapperClient, args=(result[1], inputName, str(offset), result[2], output+result[0]+".txt", mapperName,))
 			listOfThreads.append(t)
 			t.start()
+
+			print("Allocated block no %d of size %d to Node %d" % (result[0], result[2], result[1]))
+
 			offset += int(result[2])
 			'''result[] has the IP and the block stored that is currently allocated, do whatever you want with that'''
 			if count < no_of_blocks:
-				self.parametersCalc()
+				resources = getResourceStatusOfDataNodes()
+				self.parametersCalc(resources)
 				self.otherParams(1, 0.8)
 
 
@@ -183,6 +191,7 @@ class mainAlgorithm(object):
 		for th in listOfThreads:
 			th.join()
 
+		print("All mapper tasks allocated, terminting allocation process.")
 		return final
 
 
@@ -203,10 +212,12 @@ if __name__=="__main__":
 
 	resources = {}
 	resources = getResourceStatusOfDataNodes()
-	implement = mainAlgorithm(resources, block_info)
-	implement.parametersCalc()
+	implement = mainAlgorithm(block_info)
+	implement.parametersCalc(resources)
 	implement.otherParams(1, 0.8)
 	final = []
+	print("Initiating allocation pf mapper tasks....")
 	final = implement.alloc(no_of_blocks, inputName, output, mapperName, reducerName)
+	print("Initiating allocation of reducer tasks....")
 	while (reducerClient(final[0][1], output, reducerName, str(no_of_blocks)) != 0) :
 	 		pass
